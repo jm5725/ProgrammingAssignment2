@@ -3,32 +3,45 @@
 
 ## Write a short comment describing this function
 
-makeCacheMatrix <- function(x = matrix()) {
-     mcm <- NULL
-     set<- function (cche){
-     x<<-cche
-     mcm <<- NULL
-     }
-     gtcche <- function() x
-     setmtx <- function(solve) mcm<<-solve
-     getmtx <- function()mcm
-     list(set=set,gtcche=gtcche,setmtx=setmtx,getmtx=getmtx)
-     
-}
+makeCacheMatrix <- function(x = matrix()) { 
+## set the value 
+invMatrix <- NULL 
+set <- function(y) { 
+ x <<- y 
+ invMatrix  <<- NULL 
+} 
+## get the value 
+get <- function() x 
+    
+## set the value of inverse of the matrix 
+setinverse <- function(valOfInverse) invMatrix <<- valOfInverse 
+getinverse <- function() invMatrix 
+    
+## get the value of inverse of the matrix 
+list(set = set, get = get, 
+    setinverse = setinverse, 
+    getinverse = getinverse) 
+ 
+  
+} 
 
 
-## Write a short comment describing this function
 
+cacheSolve <- function(x, ...) { 
+ 
+  
+## get the inverse of the matrix         
+invMatrix <- x$getinverse() 
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-  mcm<-x$getmtx()
-  if (!is.null(mcm)){
-       message("getmtx returning cached data")
-       return(mcm)
-  }
-   matrix<-x$gtcche()
-   mcm<-solve(matrix, ...)
-   x$setmtx(mcm)
-   mcm
-}
+ ## check if the inverse has already been calculated    
+if(!is.null(invMatrix)) { 
+   message("getting cached data!") 
+     return(invMatrix) 
+   } 
+   ## if not, get the inverse of the matrix    
+   data <- x$get() 
+   invMatrix <- solve(data, ...) 
+   ## set the inverse of the matrix  
+   x$setinverse(invMatrix) 
+   invMatrix 
+ } 
